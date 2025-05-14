@@ -6,7 +6,8 @@ import random
 
 from transform import kc_to_display_cube, display_cube_to_kc, kc_moves, pos_to_color, color_to_pos
 
-MOVES = ["U", "L", "F", "R", "B", "D"]
+MOVES = ["U", "L", "F", "R", "B", "D"] # rubiks move space
+GOAL_MOVES = ["X", "Y", "D", "Di"] # constrained robot rubiks move space
 
 def scramble(cube: Cube, k: int):
     """Scramble a cube with k random moves"""
@@ -20,7 +21,7 @@ def main():
 
     init_cube = scramble(
         Cube("".join(list(map(pos_to_color.get, [x for x in kc_to_display_cube(solved)])))),
-        k=100,
+        k=50,
     )
     goal_cube = Cube(
         "".join(
