@@ -33,15 +33,17 @@ def main():
             list(map(color_to_pos.get, [x for x in initial]))
         )
 
+    print("Scrambled Cube.")
     print(init_cube, "\n")
 
     moves = kociemba.solve(initial, solved)
     solver_moves = kc_moves(moves)
 
-    print(solver_moves, "\n")
+    print("Moves:\t", solver_moves, "\n")
     
     init_cube.sequence(solver_moves)
 
+    print("Solved Cube.")
     print(init_cube)
 
 if __name__ == "__main__":
