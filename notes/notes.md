@@ -19,8 +19,8 @@
 
 **Move Set**
 - Rubik's Cube: U L F R B D U Li Fi Ri Bi Di
-- Constrained Rubik's Cube: D Di X Y (idk if we will support inverted moves here or not)
-- Robot: Rotate tray, Extend fork, Retract fork, Rotate fork, Lower hat, Raise hat (assumes only rotate one direction for fork and tray)
+- Constrained Rubik's Cube: D Di X Xi Y Yi (idk if we will support inverted moves here or not)
+- Robot: Rotate tray, Extend fork, Retract fork, Rotate fork, Lower hand, Raise hand (assumes only rotate one direction for fork and tray)
 
 **Transformation**
 - Rubik's Cube ==> Constrained Rubik's Cube: 
