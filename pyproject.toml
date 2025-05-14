@@ -1,0 +1,10 @@
+[project]
+name = "rubiks-solver"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "kociemba>=1.2.1",
+    "rubik-cube>=0.0.2",
+]
