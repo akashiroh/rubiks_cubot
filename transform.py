@@ -1,6 +1,5 @@
 import kociemba
 from rubik.cube import Cube
-from rubik.solve import Solver
 
 """
  U        W
@@ -90,3 +89,87 @@ def kc_moves(moves: str):
             collect.append(move[0])
 
     return " ".join(collect)
+
+
+# Update orientation based on cube rotation
+ROTATIONS = {
+    'X': {
+        'U': 'B', 
+        'D': 'F', 
+        'F': 'U', 
+        'B': 'D', 
+        'L': 'L', 
+        'R': 'R',
+    },
+    'Xi': {
+        'U': 'F',
+        'D': 'B',
+        'F': 'D',
+        'B': 'U',
+        'L': 'L',
+        'R': 'R',
+    },
+    'Y': {
+        'F': 'L',
+        'B': 'R',
+        'L': 'B',
+        'R': 'F',
+        'U': 'U',
+        'D': 'D',
+    },
+    'Yi': {
+        'F': 'R',
+        'B': 'L',
+        'L': 'F',
+        'R': 'B',
+        'U': 'U',
+        'D': 'D',
+    }
+}
+
+# Moves to rotate a face to the bottom
+ROTATE_TO_BOTTOM = {
+    'U': ['X', 'X'],
+    'D': [],
+    'F': ['Xi'],
+    'B': ['X'],
+    'L': ['Y', 'X'],
+    'R': ['Yi', 'X']
+}
+
+def apply_rotation(orientation, rot):
+    """Apply a single cube rotation to current orientation."""
+    new_orientation = {}
+    for face in orientation:
+        new_orientation[face] = ROTATIONS[rot].get(orientation[face], orientation[face])
+    return new_orientation
+
+def constrained_moves(moves: str):
+    """Convert moves: Rubik's Cube ==> Constrained Rubik's Cube"""
+    moves = moves.strip().split()
+    orientation = {
+        'U': 'U',
+        'R': 'R',
+        'F': 'F',
+        'D': 'D',
+        'L': 'L',
+        'B': 'B'
+    }
+    output_moves = []
+
+    for move in moves:
+        face = move[0]
+        prime = move.endswith('i')
+        target_face = face
+
+        current_position = orientation[target_face]
+
+        needed_rotations = ROTATE_TO_BOTTOM[current_position]
+        output_moves.extend(needed_rotations)
+
+        for rot in needed_rotations:
+            orientation = apply_rotation(orientation, rot)
+
+        output_moves.append('Di' if prime else 'D')
+
+    return ' '.join(output_moves)
