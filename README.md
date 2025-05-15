@@ -39,29 +39,31 @@ A Rubik's Cube solving robot.
 
 ```
 Scrambled Cube.
+    YOG
+    YWY
+    RWB
+RBB WGY ORY RGB
+GRY OBW BOG YGR
+OBW RRB WBG OWY
+    GWO
+    OYR
+    GOW
 
-    RBY
-    RWR
-    WOW
-GGO GGB OBO BWW
-WRY OBY ROB OGG
-BYR YRY OYW BWR
-    GWG
-    BYG
-    YOR
 
-Moves to solve:
-    U R R B R Ui R R D F F L Fi L Bi L L D D B B R R Ui F F B B R R B B L L
+Moves:                   Ri D F Di L Fi B Ui F B B Li Di R R Di B B R R D R R Ui R R F F
+Constrained Moves:       Yi X Di Xi D Yi X D Xi Di Yi X D Y X Di X X D Yi X Di X D X X D D Y X Di Y X Di X D D Xi Di Y X D D Yi X D D Yi X D Xi D D Xi Di X D D Y X D D
 
+Success! In 62 moves. 96.88%
 Solved Cube.
+    GGG
+    GGG
+    GGG
+WWW OOO YYY RRR
+WWW OOO YYY RRR
+WWW OOO YYY RRR
+    BBB
+    BBB
+    BBB
 
-    WWW
-    WWW
-    WWW
-RRR BBB OOO GGG
-RRR BBB OOO GGG
-RRR BBB OOO GGG
-    YYY
-    YYY
-    YYY
+Average scramble moves: 64       Average Constrained Solve Moves: 62
 ```

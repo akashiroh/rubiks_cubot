@@ -53,7 +53,7 @@ def main():
     for _ in range(int(sys.argv[1])):
         cube, cube_string, num_scramble_moves = initialize()
 
-        # print(f"Scrambled Cube.\n{cube}\n")
+        print(f"Scrambled Cube.\n{cube}\n")
 
         moves = kociemba.solve(cube_string, SOLVED_STRING)
         solver_moves = kc_moves(moves)
@@ -69,7 +69,7 @@ def main():
             scramble_moves.append(num_scramble_moves)
             solve_moves.append(num_solve_moves)
             print(f"Success! In {num_solve_moves} moves. {100 * num_solve_moves / num_scramble_moves:.2f}%")
-            # print(f"Success! In {num_moves} moves.")
+            print(f"Solved Cube.\n{cube}\n")
         else:
             print("Uh Oh!")
             print("Moves:\t", solver_moves, "\n")
