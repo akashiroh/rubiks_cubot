@@ -1,20 +1,23 @@
 import kociemba
 from rubik.cube import Cube
 
+from move_set_conversions import (
+    solver_moves,
+    constrained_moves,
+    robot_moves,
+)
+
 from transform import (
     kc_to_display_cube,
     display_cube_to_kc,
-    kc_moves,
     pos_to_color,
     color_to_pos,
-    constrained_moves,
 )
 
 import random
 import sys
 
 SOLVED_STRING = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
-# SOLVED_STRING =   "DDDDDDDDDRRRRRRRRRBBBBBBBBBUUUUUUUUULLLLLLLLLFFFFFFFFF"
 
 MOVES = ["U", "L", "F", "R", "B", "D"] # rubiks move space
 GOAL_MOVES = ["X", "Y", "D", "Di"] # constrained robot rubiks move space
@@ -31,13 +34,13 @@ def initialize():
 
     scramble_moves = random.randint(1, 200)
 
-    # cube to solve
+    # scrambled cube
     init_cube = scramble(
         Cube("".join(list(map(pos_to_color.get, [x for x in kc_to_display_cube(SOLVED_STRING)])))),
         k=scramble_moves,
     )
 
-    # initial cube string
+    # srambled cube string
     initial = display_cube_to_kc(''.join(str(init_cube).split()).replace("\n", ""))
     initial = "".join(
         list(map(color_to_pos.get, [x for x in initial]))
@@ -47,7 +50,7 @@ def initialize():
 
 
 def main():
-    assert len(sys.argv) == 2, f"Please enter the number of time you want to solve as a cli."
+    assert len(sys.argv) == 2, f"Please enter the number of time you want to solve: uv run main.py 1"
     
     scramble_moves, solve_moves = [], []
     for _ in range(int(sys.argv[1])):
@@ -55,12 +58,15 @@ def main():
 
         print(f"Scrambled Cube.\n{cube}\n")
 
-        moves = kociemba.solve(cube_string, SOLVED_STRING)
-        solver_moves = kc_moves(moves)
-        constrained_solver_moves = constrained_moves(solver_moves)
+        kc_moves = kociemba.solve(cube_string, SOLVED_STRING) # initial ==> goal
+        rubiks_moves = solver_moves(kc_moves) # R' => Ri | R2 => R R
+        constrained_solver_moves = constrained_moves(rubiks_moves) # rubiks_space => constrained_rubiks_space
+        robot_solver_moves = robot_moves(constrained_solver_moves) # constrained_rubiks_space => robot_space
 
-        print("\nMoves:\t", solver_moves)
-        print("Constrained Moves:\t", constrained_solver_moves, "\n")
+        print(f"\nKC Moves: {len(kc_moves)} moves ->", kc_moves)
+        print(f"Rubiks Moves: {len(rubiks_moves)} moves ->", rubiks_moves)
+        print(f"Constrained Moves: {len(constrained_solver_moves)} moves ->", constrained_solver_moves)
+        print(f"Robot Moves: {len(robot_solver_moves)} moves ->", robot_solver_moves, "\n")
 
         cube.sequence(constrained_solver_moves)
         
@@ -68,12 +74,9 @@ def main():
             num_solve_moves = len(constrained_solver_moves.split())
             scramble_moves.append(num_scramble_moves)
             solve_moves.append(num_solve_moves)
-            print(f"Success! In {num_solve_moves} moves. {100 * num_solve_moves / num_scramble_moves:.2f}%")
-            print(f"Solved Cube.\n{cube}\n")
+            print(f"Success! In {num_solve_moves} moves | {100 * num_solve_moves / num_scramble_moves:.2f}% solve moves as scramble moves")
         else:
             print("Uh Oh!")
-            print("Moves:\t", solver_moves, "\n")
-            print(f"Solved Cube.\n{cube}\n")
     print(f"Average scramble moves: {sum(scramble_moves) / len(scramble_moves):.0f} \t Average Constrained Solve Moves: {sum(solve_moves) / len(solve_moves):.0f}")
 
 if __name__ == "__main__":
