@@ -25,6 +25,7 @@ GOAL_MOVES = ["X", "Y", "D", "Di"] # constrained robot rubiks move space
 def scramble(cube: Cube, k: int):
     """Scramble a cube with k random moves."""
     shuffle_moves = random.choices(MOVES, k=k)
+    print(f"Shuffle Moves: {k} moves ->", shuffle_moves)
     cube.sequence(" ".join(shuffle_moves))
     return cube
 
@@ -32,7 +33,8 @@ def scramble(cube: Cube, k: int):
 def initialize():
     """initialize a cube with some scramble."""
 
-    scramble_moves = random.randint(1, 200)
+    # scramble_moves = random.randint(1, 200)
+    scramble_moves = random.randint(1, 8)
 
     # scrambled cube
     init_cube = scramble(
@@ -63,9 +65,9 @@ def main():
         constrained_solver_moves = constrained_moves(rubiks_moves) # rubiks_space => constrained_rubiks_space
         robot_solver_moves = robot_moves(constrained_solver_moves) # constrained_rubiks_space => robot_space
 
-        print(f"\nKC Moves: {len(kc_moves)} moves ->", kc_moves)
-        print(f"Rubiks Moves: {len(rubiks_moves)} moves ->", rubiks_moves)
-        print(f"Constrained Moves: {len(constrained_solver_moves)} moves ->", constrained_solver_moves)
+        print(f"\nKC Moves: {len(kc_moves.split())} moves ->", kc_moves)
+        print(f"Rubiks Moves: {len(rubiks_moves.split())} moves ->", rubiks_moves)
+        print(f"Constrained Moves: {len(constrained_solver_moves.split())} moves ->", constrained_solver_moves)
         print(f"Robot Moves: {len(robot_solver_moves)} moves ->", robot_solver_moves, "\n")
 
         cube.sequence(constrained_solver_moves)
