@@ -6,5 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "kociemba>=1.2.1",
+    "opencv-python>=4.11.0.86",
     "rubik-cube>=0.0.2",
 ]

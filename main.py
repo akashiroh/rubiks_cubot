@@ -1,6 +1,8 @@
 import kociemba
 from rubik.cube import Cube
 
+from color_scanner import scan_face
+
 from move_set_conversions import (
     solver_moves,
     constrained_moves,
@@ -48,6 +50,23 @@ def initialize():
     )
 
     return init_cube, initial, scramble_moves
+
+
+def scan_cube(image):
+    """scan all faces and return cube to regular position"""
+    moves = "SU Y X SR Yi X SF Y X SD Yi X SL Y X SB Yi X"
+    
+    cube_string = ""
+    for move in moves:
+        if move[0] == "S":
+            # scanned_image = TODO: implement camera scanner
+            face_image = cv.imread("rubiks_cube.jpg")
+            face_string = scan_face(face_image, move[1])
+            cube_string += face_string
+        else:
+            # TODO: robot controls
+            ...
+    return cube_string
 
 
 def main():
