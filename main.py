@@ -33,7 +33,6 @@ def scramble(cube: Cube, k: int):
 def initialize():
     """initialize a cube with some scramble."""
 
-    # scramble_moves = random.randint(1, 200)
     scramble_moves = random.randint(1, 8)
 
     # scrambled cube
@@ -59,6 +58,8 @@ def main():
         cube, cube_string, num_scramble_moves = initialize()
 
         print(f"Scrambled Cube.\n{cube}\n")
+        print(f"Cube String: {cube_string}")
+        breakpoint()
 
         kc_moves = kociemba.solve(cube_string, SOLVED_STRING) # initial ==> goal
         rubiks_moves = solver_moves(kc_moves) # R' => Ri | R2 => R R
