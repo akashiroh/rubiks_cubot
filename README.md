@@ -1,12 +1,20 @@
 # Rubiks Cubot
 
-A Rubik's Cube solving robot.
+A Rubik's Cube Solving Robot.
 
 **Contributors**
 - Andrew Holmes
 - Dylan Scott Carroll
 - Tarnivir Virk
 - Jonathon Ly
+
+## Examples
+
+![Demo Animation](figures/rubiks.gif)
+**Solving a Rubik's Cube with Regular Moves**
+
+![Demo Animation](figures/constrained.gif)
+**Solving a Rubik's Cube with the Constrained Moves of our Robot**
 
 ## Environment Set Up
 

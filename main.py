@@ -27,7 +27,6 @@ GOAL_MOVES = ["X", "Y", "D", "Di"] # constrained robot rubiks move space
 def scramble(cube: Cube, k: int):
     """Scramble a cube with k random moves."""
     shuffle_moves = random.choices(MOVES, k=k)
-    print(f"Shuffle Moves: {k} moves ->", shuffle_moves)
     cube.sequence(" ".join(shuffle_moves))
     return cube
 
@@ -35,7 +34,7 @@ def scramble(cube: Cube, k: int):
 def initialize():
     """initialize a cube with some scramble."""
 
-    scramble_moves = random.randint(1, 8)
+    scramble_moves = random.randint(1, 30)
 
     # scrambled cube
     init_cube = scramble(
@@ -75,7 +74,9 @@ def main():
     scramble_moves, solve_moves = [], []
     for _ in range(int(sys.argv[1])):
         cube, cube_string, num_scramble_moves = initialize()
-
+        
+        print(cube)
+        breakpoint()
         print(f"Scrambled Cube.\n{cube}\n")
         print(f"Cube String: {cube_string}")
         breakpoint()

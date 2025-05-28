@@ -5,7 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "imageio>=2.37.0",
     "kociemba>=1.2.1",
+    "matplotlib>=3.10.3",
     "opencv-python>=4.11.0.86",
+    "pillow>=11.2.1",
+    "pyqt5>=5.15.11",
     "rubik-cube>=0.0.2",
 ]
