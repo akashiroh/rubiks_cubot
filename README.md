@@ -8,14 +8,6 @@ A Rubik's Cube Solving Robot.
 - Tarnivir Virk
 - Jonathon Ly
 
-## Examples
-
-![Demo Animation](figures/rubiks.gif)
-**Solving a Rubik's Cube with Regular Moves**
-
-![Demo Animation](figures/constrained.gif)
-**Solving a Rubik's Cube with the Constrained Moves of our Robot**
-
 ## Environment Set Up
 
 **Set up with UV**
@@ -29,43 +21,36 @@ A Rubik's Cube Solving Robot.
    ```bash
     uv sync
     ```
-    - To save the cache files to a different directory than the default /home
-       ```bash
-        uv sync --cache-dir /path/to/.cache/uv/
-        
-        or
-
-        uv sync --no-cache
-        ```
-
 - Running a script with `uv`:
     ```bash
     uv run script.py
     ```
 
-## Example
+## Problem Set Up
 
-```
-Scrambled Cube.
-    WOG
-    WWR
-    GBY
-BOR WYB RWY RBR
-RRR YBW BOW GGG
-GYB OGB WBO GYW
-    YOO
-    GYR
-    OOY
+- This repo uses the [kociemba algorithm](https://kociemba.org/) from the [kociemba package](https://github.com/muodov/kociemba) to solve the cube
+- The kociemba algorithm is designed to solve the cube usng moves in the set {U, R, D, F, B, L} and ther inverses
+- See example below for what that looks like
 
+**Solving a Rubik's Cube with Regular Moves**
+![Demo Animation](figures/rubiks.gif)
 
-KC Moves: 52 moves -> B U2 L B D B2 U2 D' R F' U2 L2 D F2 U D2 R2 U' L2 B2
-Rubiks Moves: 62 moves -> B U U L B D B B U U Di R Fi U U L L D F F U D D R R Ui L L B B
-Constrained Moves: 132 moves -> X D X D D Y X D Y X D Yi X D Xi D D Xi D D X X Di Y X D Yi X Di Y X D D Yi X D D X D Yi X D D X D X X D D Y X D D X Di X D D Y X D D
-Robot Moves: 142 moves -> ['rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_cw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_cw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_ccw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_ccw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_ccw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_cw_90', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_cw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_ccw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_cw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_ccw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_ccw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_cw_90', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_cw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'extend_fork', 'rotate_fork_cw_90', 'retract_fork', 'rotate_tray_cw_90', 'lower_hand', 'rotate_fork_??_90', 'raise_hand', 'lower_hand', 'rotate_fork_??_90', 'raise_hand'] 
-Success! In 62 moves | 35.63% solve moves as scramble moves
-```
+- Our robot is designed with three main components (tray, fork, hand)
+    1. Tray: holds the cube and can rotate cw and ccw
+    2. Fork: 3D-printed fork that can extend/retract and rotate cw and ccw
+    3. Hand: Can swivel down and raise back up
 
-```
-# Average from 100 simulations of random scrambles
-Average scramble moves: 100 | Average Constrained Solve Moves: 61
-```
+- The tray allows the cube to move in the move set {Y, Yi}
+- The fork allows the cube to move in the move set {X, Xi
+- The hand + tray combo allows the cube to move in the move set {D, Di}}
+
+- Thus our new move set is {Y, X, D} and their inverses
+- See example below for what that looks like
+
+**Solving a Rubik's Cube with the Constrained Moves of our Robot**
+![Demo Animation](figures/constrained.gif)
+
+## Color Scanner
+- The color scanner utilizes a webcam that when toggled with specific robot command will scan a single face of the cube and map the pixel's hue, saturation, and value to one of the six colors
+- We can construct a cube string by manipulating the cube so that every face is seen once by the webcam
+![Scanner Example](figures/color_scanner.png)
