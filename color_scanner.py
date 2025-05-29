@@ -116,5 +116,13 @@ if __name__ == "__main__":
         cube_string += face_string
 
         print(face_string)
-        time.sleep(10)
+        time.sleep(10) # TODO: base this on a state machine
+        """
+        States:
+            - SCANNING_COLOR
+            - EXTENDING_FORK
+            - RETRACTING FORK
+            ...
+            - ROTATING_TRAY_CW
+        """
     print(cube_string)
