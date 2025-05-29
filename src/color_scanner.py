@@ -44,9 +44,21 @@ def determine_pixel_color(
     """
 
     x, y = cell_to_pixel[cell]
-    b, g, r = image[x, y]
-    h, s, v = cv.cvtColor(np.uint8([[[b, g, r]]]), cv.COLOR_BGR2HSV)[0][0]
 
+    window_size = 5
+
+    x_start = max(x - window_size, 0)
+    x_end = min(x + window_size + 1, image.shape[0])
+    y_start = max(y - window_size, 0)
+    y_end = min(y + window_size + 1, image.shape[1])
+
+    region = image[x_start:x_end, y_start:y_end]
+    hsv_region = cv.cvtColor(region, cv.COLOR_BGR2HSV)
+
+    h_mean = int(np.mean(hsv_region[:, :, 0]))
+    s_mean = int(np.mean(hsv_region[:, :, 1]))
+    v_mean = int(np.mean(hsv_region[:, :, 2]))
+    
     def classify_color(h, s, v):
         """helper function to determine color based on HSV"""
         if v > 200 and s < 30:
@@ -61,9 +73,9 @@ def determine_pixel_color(
             return 'G'
         if 85 <= h < 130:
             return 'B'
-        return 'unknown'
+        return '?'
     
-    color = classify_color(h, s, v)
+    color = classify_color(h_mean, s_mean, v_mean)
     return color
 
 
@@ -109,8 +121,8 @@ def scan_face(
         color = determine_pixel_color(image, cell)
         face_string += color
     
-    if kc:
-        face_string = "".join([color_to_pos[x] for x in face_string])
+    # if kc:
+    #     face_string = "".join([color_to_pos[x] for x in face_string])
     return face_string
 
 
