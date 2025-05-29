@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-def plot_cube(cube_str: str):
+def plot_cube(
+    cube_str: str
+):
     assert len(cube_str) == 54, "Cube string must be exactly 54 characters."
 
     # Color mapping
@@ -79,5 +81,5 @@ def plot_cube(cube_str: str):
     ax.view_init(elev=30, azim=-45)  # Adjust for best perspective
 
     plt.tight_layout()
-    # plt.show()
+    plt.show()
     return fig

@@ -85,4 +85,4 @@ def cube_to_kc(cube: Cube):
     B = layers[9:12] + layers[21:24] + layers[33:36]
 
     # Combine into KC format: U R F D L B
-    return U + R + F + D + L + B
+    return "".join([color_to_pos[x] for x in (U + R + F + D + L + B)])

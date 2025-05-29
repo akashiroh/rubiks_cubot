@@ -4,6 +4,9 @@ import numpy.typing as npt
 from transform import color_to_pos
 import time
 
+from typing import List
+
+
 # TODO: Needs to update based on orientation of the webcam compared to the cube in the robot housing
 face_order = {
     "U": [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -105,6 +108,10 @@ def scan_face(
         face_string += color
 
     return face_string
+
+
+def get_scanner_moves() -> str:
+    return "SU Y X SR Yi X SF Y X SD Yi X SL Y X SB Yi X"
 
 
 

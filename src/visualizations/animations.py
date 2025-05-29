@@ -8,7 +8,7 @@ from typing import List
 import kociemba
 from rubik.cube import Cube
 
-from main import initialize
+from cube_utils import initialize
 from move_set_conversions import (
     solver_moves,
     constrained_moves,
@@ -297,7 +297,8 @@ def animate_cube_sequence(cube_strings: List[str], moves: List[str]):
 if __name__ == '__main__':
     cube_strings = []
 
-    cube, cube_string, num_scramble_moves = initialize()
+    cube = initialize()
+    cube_string = cube_to_kc(cube)
     kc_moves = kociemba.solve(cube_string, SOLVED_STRING)
     rubiks_moves = solver_moves(kc_moves)
     constrained_solver_moves = constrained_moves(rubiks_moves)
@@ -306,7 +307,6 @@ if __name__ == '__main__':
     for i, move in enumerate(constrained_solver_moves.split()):
     # for i, move in enumerate(rubiks_moves.split()):
         cube.sequence(move)
-        cube_string = "".join(color_to_pos[cell] for cell in cube_to_kc(cube))
         cube_strings.append(cube_string)
     # animate_cube_sequence(cube_strings, moves=rubiks_moves.split())
     animate_cube_sequence(cube_strings, moves=constrained_solver_moves.split())
