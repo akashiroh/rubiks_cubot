@@ -29,7 +29,7 @@ A Rubik's Cube Solving Robot.
 ## Problem Set Up
 
 - This repo uses the [kociemba algorithm](https://kociemba.org/) from the [kociemba package](https://github.com/muodov/kociemba) to solve the cube
-- The kociemba algorithm is designed to solve the cube usng moves in the set {U, R, D, F, B, L} and ther inverses
+- The kociemba algorithm is designed to solve the cube using moves in the set {U, R, D, F, B, L, Ui, Ri, Di, Fi, Bi, Li}
 - See example below for what that looks like
 
 **Solving a Rubik's Cube with Regular Moves**
@@ -44,13 +44,13 @@ A Rubik's Cube Solving Robot.
 - The fork allows the cube to move in the move set {X, Xi
 - The hand + tray combo allows the cube to move in the move set {D, Di}}
 
-- Thus our new move set is {Y, X, D} and their inverses
+- Thus our new move set is {Y, X, D, Yi, Xi, Di}
 - See example below for what that looks like
 
 **Solving a Rubik's Cube with the Constrained Moves of our Robot**
 ![Demo Animation](figures/constrained.gif)
 
 ## Color Scanner
-- The color scanner utilizes a webcam that when toggled with specific robot command will scan a single face of the cube and map the pixel's hue, saturation, and value to one of the six colors
+- The color scanner utilizes a webcam that when toggled with a specific robot command will scan a single face of the cube and map the pixel's hue, saturation, and value to one of the six colors
 - We can construct a cube string by manipulating the cube so that every face is seen once by the webcam
 ![Scanner Example](figures/color_scanner.png)
