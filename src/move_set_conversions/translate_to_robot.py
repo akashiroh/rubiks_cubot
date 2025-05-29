@@ -11,10 +11,11 @@ ROBOT_MOVES = {
 
 def robot_moves(moves: str) -> List[str]:
     """Convert moves: Constrained Rubik's Cube ==> Robot"""
-    moves = moves.split()
     output_moves = []
 
-    for move in moves:
-        output_moves.extend(ROBOT_MOVES[move])
-
+    for move in moves.split():
+        if move in ROBOT_MOVES:
+            output_moves.extend(ROBOT_MOVES[move])
+        else:
+            output_moves.append(move)
     return output_moves

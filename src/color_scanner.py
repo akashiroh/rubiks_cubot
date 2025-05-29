@@ -2,8 +2,9 @@ import cv2 as cv
 import numpy as np
 import numpy.typing as npt
 from transform import color_to_pos
-import time
+from move_set_conversions import robot_moves
 
+import time
 from typing import List
 
 
@@ -68,7 +69,6 @@ def determine_pixel_color(
 
 def open_webcam(
     face: str,
-    debug: bool=True,
 ) -> npt.NDArray[np.uint8]:
     """
     opens webcam and scans one face
@@ -90,7 +90,8 @@ def open_webcam(
 
 def scan_face(
     face: str,
-    debug: bool=True,
+    image: npt.NDArray[np.uint8] = None,
+    kc: bool=True,
 ) -> str:
     """
     for each cell on the cube face, scan the color
@@ -99,37 +100,67 @@ def scan_face(
         image (ndarray): single frame from webcam
         face (str): str in the set {U, D, F, B, L, R} to determine the order of the cells
     """
-    image = open_webcam(face, debug)
+    if image is None:
+        image = open_webcam(face)
 
     face_string = ""
     cell_order = face_order[face]
     for cell in cell_order:
         color = determine_pixel_color(image, cell)
         face_string += color
-
+    
+    if kc:
+        face_string = "".join([color_to_pos[x] for x in face_string])
     return face_string
 
 
 def get_scanner_moves() -> str:
-    return "SU Y X SR Yi X SF Y X SD Yi X SL Y X SB Yi X"
+    return robot_moves("SU Y X SR Yi X SF Y X SD Yi X SL Y X SB Yi X")
 
+
+def debug_webcam(
+) -> npt.NDArray[np.uint8]:
+    """
+    opens webcam and scans one face
+
+    Args: 
+        face (str): str in the set {U, D, F, B, L, R} to determine the order of the cells
+        debug (bool): keeps webcam open and draws points where it is scanning the color
+    Returns: frame (ndarray): single frame
+    """
+
+    webcam = cv.VideoCapture(0)
+
+    while True:
+        ret, frame = webcam.read()
+
+        face_string = scan_face("U", frame)
+
+        for i in range(1, 10):
+            point = cell_to_pixel[i]
+            face_image = cv.circle(frame, point, radius=5, color=(0, 255, 0), thickness=-1)
+
+        frame = cv.putText(
+            frame, 
+            face_string,
+            (50,50), 
+            cv.FONT_HERSHEY_SIMPLEX,
+            1, 
+            (0, 255, 0), 
+            2, 
+            cv.LINE_AA,
+        )
+
+        cv.imshow("Webcam", frame)
+
+        if cv.waitKey(1) == ord("q"):
+            break
+
+    webcam.release()
+    cv.destroyAllWindows()
+
+    return frame
 
 
 if __name__ == "__main__":
-
-    cube_string = ""
-    for face in ["U", "R", "F", "D", "L", "B"]:
-        face_string = scan_face(face)
-        cube_string += face_string
-
-        print(face_string)
-        time.sleep(10) # TODO: base this on a state machine
-        """
-        States:
-            - SCANNING_COLOR
-            - EXTENDING_FORK
-            - RETRACTING FORK
-            ...
-            - ROTATING_TRAY_CW
-        """
-    print(cube_string)
+    debug_webcam()
