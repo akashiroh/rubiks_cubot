@@ -12,15 +12,15 @@ face_order = {
 }
 
 cell_to_pixel = {
-    1: (180, 180),
-    2: (541, 180),
-    3: (902, 180),
-    4: (180, 541),
-    5: (541, 541),
-    6: (902, 541),
-    7: (180, 902),
-    8: (541, 902),
-    9: (902, 902),
+    1: (190, 140),
+    2: (320, 140),
+    3: (460, 140),
+    4: (190, 260),
+    5: (320, 260),
+    6: (460, 260),
+    7: (190, 380),
+    8: (320, 380),
+    9: (460, 380),
 }
 
 def determine_pixel_color(image, cell: int):
@@ -55,19 +55,42 @@ def scan_face(image, face: str):
     return face_string
 
 if __name__ == "__main__":
-    cube_string = ""
-    for face in ["U", "R", "F", "D", "L", "B"]:
-        face_image = cv.imread("rubiks_cube.jpg")
 
-        # for i in range(1, 10):
-        #     point = cell_to_pixel[i]
-        #     face_image = cv.circle(face_image, point, radius=5, color=(0, 255, 0), thickness=-1)
-        # cv.imshow("display", face_image)
-        # cv.waitKey(0)
-        # cv.destroyAllWindows()
+    webcam = cv.VideoCapture(0)
 
-        face_string = scan_face(face_image, face)
-        cube_string += face_string
+    while True:
+        ret, frame = webcam.read()
+
+        width = int(webcam.get(cv.CAP_PROP_FRAME_WIDTH))
+        height = int(webcam.get(cv.CAP_PROP_FRAME_HEIGHT))
+
+        for i in range(1, 10):
+            point = cell_to_pixel[i]
+            face_image = cv.circle(frame, point, radius=5, color=(0, 255, 0), thickness=-1)
+
+        face_string = scan_face(frame, "U")
         print(face_string)
-    cube_string = "".join([color_to_pos[c] for c in cube_string])
-    print(cube_string)
+        cv.imshow("Camera", frame)
+
+        if cv.waitKey(1) == ord("q"):
+            break
+    webcam.release()
+    cv.destroyAllWindows()
+
+
+    # cube_string = ""
+    # for face in ["U", "R", "F", "D", "L", "B"]:
+    #     face_image = cv.imread("rubiks_cube.jpg")
+
+    #     # for i in range(1, 10):
+    #     #     point = cell_to_pixel[i]
+    #     #     face_image = cv.circle(face_image, point, radius=5, color=(0, 255, 0), thickness=-1)
+    #     # cv.imshow("display", face_image)
+    #     # cv.waitKey(0)
+    #     # cv.destroyAllWindows()
+
+    #     face_string = scan_face(face_image, face)
+    #     cube_string += face_string
+    #     print(face_string)
+    # cube_string = "".join([color_to_pos[c] for c in cube_string])
+    # print(cube_string)
