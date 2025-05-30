@@ -4,50 +4,49 @@ from rubik.cube import Cube
 from color_scanner import get_scanner_moves, scan_face
 from cube_utils import initialize, SOLVED_STRING
 from transform import cube_to_kc
+from visualizations.animations import animate_cube_sequence
 from move_set_conversions import (
     solver_moves,
     constrained_moves,
     robot_moves,
 )
 
-# TODO: We need to scan  before getting the solving moves
-def get_robot_moves(
-    debug: bool=True,
-) -> str or None:
-    """
-    returns a list of moves needed to solve the cube
-    """
-    
-    cube = initialize()
-    kc_moves = kociemba.solve(cube_to_kc(cube), SOLVED_STRING)
 
+def solve(
+    scan: bool=False,
+    save_to: str=None,
+) -> None:
+    
+    if scan:
+        scanner_moves = get_scanner_moves()
+        
+        cube_string = ""
+        for move in scanner_moves:
+            if move.startswith("S"):
+                cube_string += scan_face(move[-1])
+            else:
+                # TODO: move robot
+                ...
+    else:
+        cube = initialize()
+        cube_string = cube_to_kc(cube)
+
+    kc_moves = kociemba.solve(cube_string, SOLVED_STRING)
     rubiks_moves = solver_moves(kc_moves)
     constrained_solver_moves = constrained_moves(rubiks_moves)
     robot_solver_moves = robot_moves(constrained_solver_moves)
 
-    cube.sequence(constrained_solver_moves)
-    
-    return get_scanner_moves() + " " + constrained_solver_moves if cube.is_solved() else None
+    cube_strings = []
 
-def solve() -> None:
+    cube_strings.append(cube_string)
+    for move in constrained_solver_moves.split():
+        # TODO: move robot
+        cube.sequence(move)
+        cube_strings.append(cube_to_kc(cube))
 
-    scanner_moves = get_scanner_moves()
-    
-    cube_string = ""
-    for move in scanner_moves:
-        if move.startswith("S"):
-            cube_string += scan_face(move[-1])
-        else:
-            # TODO: move robot
-            ...
+    if save_to is not None:
+        animate_cube_sequence(cube_strings, moves=constrained_solver_moves.split(), save_to=save_to)
 
-    kc_moves = kociemba.solve(cube_string, SOLVED_STRING)
-    constrained_solver_moves = constrained_moves(rubiks_moves)
-    robot_solver_moves = robot_moves(constrained_solver_moves)
-
-    for move in robot_solver_moves:
-            # TODO: move robot
-            ...
 
 if __name__ == "__main__":
-    solve()
+    solve(scan=False, save_to="animation.gif")

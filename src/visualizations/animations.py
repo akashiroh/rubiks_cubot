@@ -5,6 +5,9 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.animation import PillowWriter
 from typing import List
 
+import matplotlib
+matplotlib.use('Agg')
+
 import kociemba
 from rubik.cube import Cube
 
@@ -212,7 +215,7 @@ def rotate_vertices(vertices, axis, angle_deg, center):
     return [((R @ (np.array(v) - center)) + center).tolist() for v in vertices]
 
 # === Animation function ===
-def animate_cube_sequence(cube_strings: List[str], moves: List[str]):
+def animate_cube_sequence(cube_strings: List[str], moves: List[str], save_to: str):
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111, projection='3d')
 
@@ -290,8 +293,7 @@ def animate_cube_sequence(cube_strings: List[str], moves: List[str]):
             ax.add_collection3d(poly)
 
     ani = FuncAnimation(fig, draw_frame, frames=total_frames + frames_per_move, interval=5, repeat=False)
-    plt.show()
-    ani.save("constrained.gif", writer=PillowWriter(fps=30))
+    ani.save(save_to, writer=PillowWriter(fps=30))
 
 # === Test in __main__ ===
 if __name__ == '__main__':
