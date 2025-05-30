@@ -9,26 +9,19 @@ from transform import (
     color_to_pos,
 )
 
+from typing import List
+
 SOLVED_STRING = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 MOVES = ["U", "L", "F", "R", "B", "D"]
 
 def scramble(
-    cube: Cube, 
     k: int,
-) -> Cube:
+) -> List[str]:
     """Scramble a cube with k random moves."""
     shuffle_moves = random.choices(MOVES, k=k)
+    cube = Cube(kc_to_display_cube(SOLVED_STRING))
     cube.sequence(" ".join(shuffle_moves))
-    return cube
 
-def initialize() -> Cube:
-    """initialize a cube with some scramble."""
+    cube_string = cube_to_kc(cube)
 
-    scramble_moves = random.randint(1, 30)
-
-    cube = scramble(
-        Cube("".join(list(map(pos_to_color.get, [x for x in kc_to_display_cube(SOLVED_STRING)])))),
-        k=scramble_moves,
-    )
-
-    return cube
+    return " ".join(shuffle_moves), cube_string

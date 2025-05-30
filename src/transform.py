@@ -72,17 +72,4 @@ def display_cube_to_kc(display_str: str):
 
 def cube_to_kc(cube: Cube):
     display_str = ''.join(re.findall(r'[A-Z]', str(cube)))
-    U = display_str[0:9]
-    D = display_str[45:54]
-
-    # The 36 characters in between are 3 rows of LFRB
-    layers = display_str[9:45]
-
-    # Extract rows
-    L = layers[0:3] + layers[12:15] + layers[24:27]
-    F = layers[3:6] + layers[15:18] + layers[27:30]
-    R = layers[6:9] + layers[18:21] + layers[30:33]
-    B = layers[9:12] + layers[21:24] + layers[33:36]
-
-    # Combine into KC format: U R F D L B
-    return "".join([color_to_pos[x] for x in (U + R + F + D + L + B)])
+    return display_cube_to_kc(display_str)
